@@ -97,11 +97,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-with st.expander("Click to learn more about the model"):
-    st.markdown(
-        'This is some text explaning our model'
-    )
-
 # Input fields for stop and duration
 selected_airline = st.selectbox("Select Airline 🌏", ['Air India', 'Vistara'])
 selected_from = st.selectbox("Select Departure 🛫", df['from'].unique().tolist())

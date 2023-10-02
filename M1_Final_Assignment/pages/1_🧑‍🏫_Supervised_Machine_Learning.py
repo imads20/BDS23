@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from sklearn.linear_model import LinearRegression
 import pickle
 import requests
 import itertools
@@ -85,7 +84,7 @@ def predict_price(airline, duration, distance, stop, city_from, city_to, dep_tim
 
     prediction_value = prediction[0].round(2)
 
-    string = f"Estimated flight price is {prediction_value} INR"
+    string = f"Estimated flight price is {prediction_value} INR 💸"
 
     return string
 
@@ -105,13 +104,13 @@ with st.expander("Click to learn more about the model"):
 
 # Input fields for stop and duration
 selected_airline = st.selectbox("Select Airline 🌏", ['Air India', 'Vistara'])
-selected_from = st.selectbox("Select Departure 🌏", df['from'].unique().tolist())
-selected_to = st.selectbox("Select Destination 🌏", df['to'].unique().tolist())
-selected_dep = st.selectbox("Select Departure Time 🌏", df['dep_time'].unique().tolist())
-selected_arr = st.selectbox("Select Arrival Time 🌏", df['arr_time'].unique().tolist())
-selected_stop = st.number_input("Select Number of Stops", min_value=0, max_value=2, step=1, value=1)
-selected_distance = st.number_input("Select Distance", min_value=250, max_value=2000, step=50, value=1000)
-selected_duration = st.number_input("Select Duration (minutes)", min_value=120, max_value=1800, step=30, value=360)
+selected_from = st.selectbox("Select Departure 🛫", df['from'].unique().tolist())
+selected_to = st.selectbox("Select Destination 🛬", df['to'].unique().tolist())
+selected_dep = st.selectbox("Select Departure Time 🌅", df['dep_time'].unique().tolist())
+selected_arr = st.selectbox("Select Arrival Time 🌄", df['arr_time'].unique().tolist())
+selected_stop = st.number_input("Select Number of Stops 🛑", min_value=0, max_value=2, step=1, value=1)
+selected_distance = st.number_input("Select Distance 📏", min_value=250, max_value=2000, step=50, value=1000)
+selected_duration = st.number_input("Select Duration (minutes) ⏱️", min_value=120, max_value=1800, step=30, value=360)
 
 # Button to trigger price estimation
 if st.button("Estimate Flight Price"):

@@ -9,7 +9,7 @@ st.set_page_config(
     page_icon="🛫",
 )
 
-df = pd.read_csv("https://raw.githubusercontent.com/imads20/DashApps/main/FlightsStreamlit/cleaned.csv")
+df = pd.read_csv("https://raw.githubusercontent.com/imads20/BDS23/main/M1_Final_Assignment/business.csv")
 
 X = df[['stop', 'duration_minutes']]
 y = df[['price']]

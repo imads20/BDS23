@@ -126,6 +126,13 @@ st.markdown(
 """
 )
 
+# Horizontal line
+st.markdown(
+    '<hr style="border: none; height: 5px; background: linear-gradient(90deg, #FFA500, #000000);">',
+    unsafe_allow_html=True
+)
+
+
 
 # Input fields for features
 selected_airline = st.selectbox("Select Airline 🌏", ['Air India', 'Vistara'])

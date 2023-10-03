@@ -1,4 +1,5 @@
 import streamlit as st
+from PIL import Image
 
 st.set_page_config(
     page_title="Welcome",
@@ -12,6 +13,9 @@ st.markdown(
     '<hr style="border: none; height: 5px; background: linear-gradient(90deg, #FFA500, #000000);">',
     unsafe_allow_html=True
 )
+
+image = "https://raw.githubusercontent.com/imads20/BDS23/main/M1_Final_Assignment/corgi_welcome.png"
+st.image(image)
 
 st.markdown(
     """
@@ -30,5 +34,4 @@ st.markdown(
 
 """
 )
-
 

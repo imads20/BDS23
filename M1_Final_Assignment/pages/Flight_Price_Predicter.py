@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import requests
 import itertools
+from PIL import Image
 
 
 st.set_page_config(
@@ -113,6 +114,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Inser image
+image = "https://raw.githubusercontent.com/imads20/BDS23/main/M1_Final_Assignment/corgi_flying.png"
+st.image(image)
 
 st.markdown(
     """
@@ -144,3 +148,4 @@ if st.button("Estimate Flight Price"):
                            dep_time=selected_dep, 
                            arr_time=selected_arr)
     st.write(result)
+

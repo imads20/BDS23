@@ -53,21 +53,28 @@ model_rf, scaler, df, ohe, le = load_components()
 def predict_price(airline, duration, distance, stop, city_from, city_to, dep_time, 
                   arr_time, price=0):
 
+    # Convert the selected airline to 0 or 1 depending on the assigned value in the label encoder
     airline = le.transform([airline])
     
+    # Add prefix to categorical values so they correspond to prefixed added in the preopressing and the column names in the OneHotEncoder
     city_from = "from_" + city_from
     city_to = 'to_' + city_to
     dep_time = "dep_" + dep_time
     arr_time = "arr_" + arr_time
-    
+
+    # Get a list of column names in the OneHotEncoder
     cats = list(itertools.chain(*ohe.categories_))
 
+    # Create a dataframe with the categorical values
     new_cat = pd.DataFrame({'to':city_to,
                             'from': city_from,
                             'dep_time': dep_time,
                             'arr_time': arr_time}, index=[0])
+    
+    # Apply the OneHotEncoder to the dataframe and create a dataframa that can go into out model
     new_values_cat = pd.DataFrame(ohe.transform(new_cat), columns = cats, index=[0])
     
+    # Create a dataframe with the numerical values
     new_num = pd.DataFrame({
       'price': [price],
       'airline':[airline],
@@ -75,15 +82,24 @@ def predict_price(airline, duration, distance, stop, city_from, city_to, dep_tim
       'duration_minutes':[duration],
       'stop':[stop],
       })
-
+    
+    # Scale the numerical values so it matches the scaling used when training model
     new_values_num = pd.DataFrame(scaler.transform(new_num), columns = new_num.columns, index=[0])
+
+    # Remove the price column that were set to 0 originally as this was just there to make scaler work (we will try to predict this)
     new_values_num = new_values_num.drop('price', axis=1) 
 
+    # Use join to combine the scaled numerical dataframe and the encoded categorical dataframe
+    # This will create a df with the row that we are trying to predict
     line_to_pred = new_values_num.join(new_values_cat)
+
+    # Predict the row using the RandomForest model
     prediction = model_rf.predict(line_to_pred)
 
+    # Get the predicted value and round of to two decimals
     prediction_value = prediction[0].round(2)
 
+    # Create output string
     string = f"Estimated flight price is {prediction_value} INR 💸"
 
     return string
@@ -97,7 +113,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Input fields for stop and duration
+# Input fields for features
 selected_airline = st.selectbox("Select Airline 🌏", ['Air India', 'Vistara'])
 selected_from = st.selectbox("Select Departure 🛫", df['from'].unique().tolist())
 selected_to = st.selectbox("Select Destination 🛬", df['to'].unique().tolist())

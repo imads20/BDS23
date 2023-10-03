@@ -113,6 +113,16 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
+st.markdown(
+    """
+    To predict flight prices, we have employed Supervised Machine Learning. 
+    The Flight Price Predictor is built upon a randomforest model.
+
+"""
+)
+
+
 # Input fields for features
 selected_airline = st.selectbox("Select Airline 🌏", ['Air India', 'Vistara'])
 selected_from = st.selectbox("Select Departure 🛫", df['from'].unique().tolist())

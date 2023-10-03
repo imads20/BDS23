@@ -5,7 +5,7 @@ st.set_page_config(
     page_icon="🛫",
 )
 
-st.write("# Welcome to Business Class Flight Price Predicter! 🛫")
+st.write("# Welcome to Business Class Flight Price Predictor! 🛫")
 
 # Horizontal line
 st.markdown(

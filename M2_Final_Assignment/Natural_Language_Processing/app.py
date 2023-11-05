@@ -130,10 +130,6 @@ def classify_label(text):
   if result == 4:
     return "Physician, " "probability = " + str(result2[0][4].round(2)), p
 
-
-
-#text = 'He had been at the hospital for many years and was quite efficient with his scalpel'
-
 # Define interface for app
 demo = gr.Interface(fn=classify_label, 
                     inputs=[gr.Textbox(label = "Insert bio to find medical profession")], 

@@ -1,0 +1,7 @@
+community==1.0.0b1
+matplotlib==3.8.1
+networkx==3.2.1
+pandas==2.1.2
+python_louvain==0.16
+Requests==2.31.0
+streamlit==1.28.1

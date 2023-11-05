@@ -4,6 +4,7 @@ import requests
 import networkx as nx
 import matplotlib.pyplot as plt
 import pandas as pd
+import community.community_louvain as community_louvain
 
 # Remove warnings
 st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -54,18 +55,14 @@ st.markdown(
 
 st.markdown(
     """
-    Greetings
-
-    We are delighted to introduce our Flight Price Prediction Tool.
-
-    Within this elegant Streamlit application, you will discover a comprehensive analysis dedicated to the realm of business class 
-    flight fares. This analytical resource grants you valuable insights into the factors that influence flight prices, equipping 
-    your esteemed organization with a strategic advantage in the competitive marketplace. To access our cutting-edge prediction 
-    model, kindly navigate to the "Flight Price Predictor" tab.
-
-    Our dedicated team takes immense pride in presenting this predictive model, and we trust it will deliver substantial value to 
-    your discerning needs. Should our work resonate with your discerning taste, please do not hesitate to engage with us for a 
-    tailored data handling proposal tailored to your company's distinctive requirements.
+    Welcome to our Streamlit app tailored for high-energy physics citations. 
+    Dive into the world of scientific collaboration within this specialized field. 
+    Our streamlined and user-friendly app simplifies the exploration of citation networks, 
+    allowing you to visualize connections, analyze citation patterns, and identify influential 
+    research effortlessly. Whether you're a physicist, researcher, or simply curious about 
+    high-energy physics, our app provides valuable insights into the dynamic landscape of 
+    citations in this domain. Join us in uncovering the collaborative spirit and impactful 
+    work in high-energy physics through our app.
 
 """
 )
@@ -78,6 +75,12 @@ st.markdown(
 
 ######## One-Mode Visualization ########
 st.write("## One-Mode Visualization")
+
+st.markdown(
+    """
+    This is a One-Mode Visualization of the filtered network with the 100 most observed papers.
+"""
+)
 
 fig = nx.draw(G, with_labels=False, node_size=25)
 st.pyplot(fig)
@@ -92,22 +95,83 @@ st.markdown(
 ######## Centrality Visualizations ########
 st.write("## Centrality Visualizations")
 
-central_select = st.selectbox(label = "Centrality Measure",
+st.markdown(
+    """
+    Below the size of each paper is weighted by how central each node is for the network.
+    Centrality can be calculated using various methods. Below you can select between three different options.
+"""
+)
+
+central_select = st.selectbox(label = "Select a Centrality Measure",
                               options=['Degree Centrality', 'Betweenness Centrality', 'Eigenvector Centrality'])
 
 G_layout = nx.layout.fruchterman_reingold_layout(G)
 
 if central_select == 'Degree Centrality': 
+    st.markdown(
+        """
+        Degree Centrality is the most intuitive node measure as it just counts the number 
+        of adjacent egdes to a node.
+        The higher the number of adjacent egdes, the higher centrality.
+    """
+    )
     node_sizes = [2.5*cent_degree[node] for node in G.nodes()]
     fig1 = nx.draw(G, with_labels=False, node_size=node_sizes)
     st.pyplot(fig1)
 elif central_select == 'Betweenness Centrality': 
+    st.markdown(
+        """
+        Betweenness Centrality measures the extend to which a node lies on the shortest path.
+        A higher the centrality is an indication of more short paths going through the node, 
+        and thus the node is more important for connecting different paths of a network.
+    """
+    )
     node_sizes = [2.5*cent_between[node] for node in G.nodes()]
     fig2 = nx.draw(G, with_labels=False, node_size=node_sizes)
     st.pyplot(fig2)
 elif central_select == 'Eigenvector Centrality': 
+    st.markdown(
+        """
+        Eigenvector Centrality extends the Degree Centrality by including the centrality of 
+        the adjacent nodes. This results in nodes which are connected to other important nodes
+        having a higher centrality measure. 
+    """
+    )
     node_sizes = [4.5*cent_eigen[node] for node in G.nodes()]
     fig2 = nx.draw(G, with_labels=False, node_size=node_sizes)
     st.pyplot(fig2)
 
+st.markdown(
+    """
+    To compare the different centrality measures, you can explore the table below. 
+    The table displays the five most central nodes according to each measure.
+"""
+)
 st.dataframe(df_top)
+
+# Horizontal line
+st.markdown(
+    '<hr style="border: none; height: 5px; background: linear-gradient(90deg, #FFA500, #000000);">',
+    unsafe_allow_html=True
+)
+
+######## Community Detection ########
+st.write("## Community Detection")
+
+st.markdown(
+    """
+    Below you can see the identified communities in the network. 
+    The communities has been detected using the Louvain Community Detection Algorithm.
+    The communities are indexed by node color, while the node size displays the Degree 
+    Centrality.
+"""
+)
+
+com = community_louvain.best_partition(G)
+node_colors = [com[node] for node in G.nodes()]
+node_sizes = [2.5*cent_degree[node] for node in G.nodes()]
+fig3 = nx.draw(G, with_labels=False, node_color = node_colors, node_size=node_sizes)
+st.pyplot(fig3)
+
+
+

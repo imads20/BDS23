@@ -134,8 +134,7 @@ def classify_label(text):
 
 #text = 'He had been at the hospital for many years and was quite efficient with his scalpel'
 
-# show the results
-
+# Define interface for app
 demo = gr.Interface(fn=classify_label, 
                     inputs=[gr.Textbox(label = "Insert bio to find medical profession")], 
                     outputs=[
